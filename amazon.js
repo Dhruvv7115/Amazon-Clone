@@ -40,7 +40,7 @@ products.forEach((product) => {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart js-added-to-cart-${product.id}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
@@ -53,15 +53,18 @@ products.forEach((product) => {
 });
 document.querySelector('.js-products-grid')
   .innerHTML = productsHTML ;
+
+const addedMessageTimeouts = {};
+
 document.querySelectorAll('.js-add-to-cart-button')
   .forEach((button) =>{
     button.addEventListener('click',() => {
 
-      const productId = button.dataset.productId;
+      const {productId} = button.dataset;
 
-      const quantity = document.querySelector(`.js-quantity-selector-${productId}`);
+      const selectorValue = document.querySelector(`.js-quantity-selector-${productId}`);
       
-      const selectorValue = Number(quantity.value);
+      const quantity = Number(selectorValue.value);
 
       let matchingItem;
       cart.forEach((item) => {
@@ -70,22 +73,35 @@ document.querySelectorAll('.js-add-to-cart-button')
         }
       });
       if(matchingItem){
-        matchingItem.quantity += selectorValue;
+        matchingItem.quantity += quantity;
       }else{
         cart.push({
           productId,
-          quantity: 1
+          quantity
         });
       }
-      console.log(cart);
       let cartQuantity = 0;
       cart.forEach((item) => {
         cartQuantity += item.quantity;
       });
       document.querySelector('.js-cart-quantity')
         .innerHTML = cartQuantity;
+      
+      const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+
+      const previousTimeoutId = addedMessageTimeouts[productId];
+      if (previousTimeoutId) {
+        clearTimeout(previousTimeoutId);
+      }
+        
+      const timeoutId = setTimeout(() => {
+        addedMessage.classList.remove('added-to-cart-visible');
+      }, 2000);
+
+      addedMessage.classList.add('added-to-cart-visible');
+
+      addedMessageTimeouts[productId] = timeoutId;
+      console.log(addedMessageTimeouts);
+      
     })
   })
-  
-  
-
