@@ -45,7 +45,8 @@ cart.forEach((cartItem) => {
             data-product-id="${matchingProduct.id}">
               Update
             </span>
-            <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+            <input class="quantity-input js-quantity-input js-quantity-input-${matchingProduct.id}"
+            data-product-id="${matchingProduct.id}">
             <span class="save-quantity-link link-primary js-save-link"
             data-product-id="${matchingProduct.id}">
               Save
@@ -111,14 +112,14 @@ document.querySelector('.js-order-summary')
 document.querySelectorAll('.js-delete-link')
   .forEach((link) => {
     link.addEventListener('click',() => {
-    const {productId} = link.dataset;
-    removeFromCart(productId);
+      const { productId } = link.dataset;
+      removeFromCart(productId);
 
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
 
-    container.remove();
+      container.remove();
 
-    updateCartQuantity();
+      updateCartQuantity();
   });
 });
 
@@ -167,3 +168,28 @@ document.querySelectorAll('.js-save-link')
     updateCartQuantity();
   });
 });
+document.querySelectorAll('.js-quantity-input')
+  .forEach((input) => {
+    input.addEventListener('keydown',(event) => {
+      const { productId } = input.dataset;
+      if(event.key === 'Enter'){
+        const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
+        const newQuantity = Number(quantityInput.value);
+
+        if (newQuantity <= 0 || newQuantity >= 1000) {
+          alert('Quantity must be at least 1 and less than 1000');
+          return;
+        }
+        updateQuantity(productId, newQuantity);
+
+        const container = document.querySelector(`.js-cart-item-container-${productId}`);
+        container.classList.remove('is-editing-quantity');
+
+        const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`);
+        quantityLabel.innerHTML = newQuantity;
+
+        updateCartQuantity();
+    
+      }
+    })
+  })
