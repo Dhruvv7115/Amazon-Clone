@@ -1,0 +1,21 @@
+import { cart } from "../../data/cart.js";
+
+export function renderCheckoutHeader(){
+  let cartQuantity = 0;
+
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+
+  const header = (cartQuantity === 1)
+    ? `${cartQuantity} item`
+    : `${cartQuantity} items`;
+
+  const html =`Checkout (
+  <a class="return-to-home-link js-return-to-home-link" href="amazon.html">
+    ${header}
+  </a>)`;
+  
+  document.querySelector('.js-header-middle-section')
+    .innerHTML = html;
+}
