@@ -1,6 +1,6 @@
 import { cart } from "../../data/cart.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
-import { getProduct, products } from "../../data/products.js";
+import { getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 
 export function renderPaymentSummary(){
@@ -35,7 +35,8 @@ export function renderPaymentSummary(){
 
     <div class="payment-summary-row">
       <div>Shipping &amp; handling:</div>
-      <div class="payment-summary-money">
+      <div class="payment-summary-money 
+      js-payment-summary-shipping">
         $${formatCurrency(shippingPriceCents)}
       </div>
     </div>
@@ -56,7 +57,8 @@ export function renderPaymentSummary(){
 
     <div class="payment-summary-row total-row">
       <div>Order total:</div>
-      <div class="payment-summary-money">
+      <div class="payment-summary-money
+      js-payment-summary-total">
         $${formatCurrency(totalCents)}
       </div>
     </div>
@@ -67,5 +69,4 @@ export function renderPaymentSummary(){
   `;
   document.querySelector('.js-payment-summary')
     .innerHTML = paymentSummaryHTML;
-
 }
