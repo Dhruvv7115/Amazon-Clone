@@ -41,6 +41,15 @@ products.forEach((product) => {
           <option value="10">10</option>
         </select>
       </div>
+      <!-- 
+        we can use ternary operator to check if the product is instanceof Clothing if yes then we can return the link to size chart else return an empty string 
+      -->
+      <!-- 
+        1)But we have used 'Polymorphism'. 
+        2)Polymorphism : use a method w/o knowing the class.
+        3)extraInfoHTML() is defined in both the parent and child class but it returns the link to size chart in child class (Clothing) and returns an empty string in parent class (Product). 
+      -->
+      ${product.extraInfoHTML()}
 
       <div class="product-spacer"></div>
 
