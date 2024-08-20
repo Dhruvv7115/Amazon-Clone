@@ -54,7 +54,7 @@ class Cart{
   
     this.cartItems = newCart;
   
-    saveToStorage();
+    this.saveToStorage();
   };
   
   calculateCartQuantity() {
@@ -100,10 +100,4 @@ class Cart{
   }
 }
 
-const cart = new Cart('cart-oop');
-const businessCart = new Cart('businessCart-oop');
-
-console.log(cart.cartItems);
-console.log(businessCart.cartItems);
-console.log(cart);
-console.log(businessCart);
+export const cart = new Cart('cart-oop');
