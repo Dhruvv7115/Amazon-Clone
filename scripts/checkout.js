@@ -6,8 +6,8 @@ import { loadProducts, loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/cart-class.js";
 
 // import '../data/cart-class.js'
-//import '../data/car.js';
-//import '../data/backend-practice.js';
+// import '../data/car.js';
+// import '../data/backend-practice.js';
 
 async function loadPage(){
   try {
