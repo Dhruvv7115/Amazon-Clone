@@ -70,7 +70,7 @@ export function renderPaymentSummary(){
   `;
   document.querySelector('.js-payment-summary')
     .innerHTML = paymentSummaryHTML;
-
+    
   document.querySelector('.js-place-order')
     .addEventListener('click', async() => {
       try{
@@ -83,7 +83,7 @@ export function renderPaymentSummary(){
             cart: cart
           })
         });
-        const order = response.json();
+        const order = await response.json();
         addOrder(order);
       } catch(error) {
         console.log('Unexpected error. Try again later.');
