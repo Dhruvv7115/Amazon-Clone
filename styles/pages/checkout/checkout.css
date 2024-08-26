@@ -234,3 +234,14 @@
 .is-editing-quantity .update-quantity-link {
   display: none;
 }
+
+.view-products-link{
+  margin-top: 10px;
+  padding: 8px 15px;
+  text-decoration: none;
+  display: inline-block;
+}
+.place-order-button-disabled{
+  opacity: 0.5;
+  pointer-events: none;
+}

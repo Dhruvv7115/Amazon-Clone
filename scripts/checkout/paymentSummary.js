@@ -5,6 +5,9 @@ import { getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 
 export function renderPaymentSummary(){
+  if(cart.cartItems.length === 0){
+
+  }
   let productPriceCents = 0;
   let shippingPriceCents = 0;
   let cartItemQuantity = 0;
@@ -70,30 +73,30 @@ export function renderPaymentSummary(){
   `;
   document.querySelector('.js-payment-summary')
     .innerHTML = paymentSummaryHTML;
+
+  if(cart.cartItems.length === 0){
+    document.querySelector('.js-place-order').classList.add('place-order-button-disabled');
+  }
     
   document.querySelector('.js-place-order')
     .addEventListener('click', async() => {
-      if(cart.cartItems.length !== 0){
-        try{
-          const response = await fetch('https://supersimplebackend.dev/orders', {
-            method: 'POST',
-            headers:{
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              cart: cart
-            })
-          });
-          const order = await response.json();
-          addOrder(order);
-        } catch(error) {
-          console.log('Unexpected error. Try again later.');
-        }
-        cart.resetCart();
-  
-        window.location.href = 'orders.html';
-      }else {
-        alert("You don't have enough products in your cart.");
+      try{
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+          method: 'POST',
+          headers:{
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cart: cart
+          })
+        });
+        const order = await response.json();
+        addOrder(order);
+      } catch(error) {
+        console.log('Unexpected error. Try again later.');
       }
+      cart.resetCart();
+
+      window.location.href = 'orders.html';
     });
 }
