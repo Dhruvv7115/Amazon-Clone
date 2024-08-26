@@ -56,6 +56,11 @@ class Cart{
   
     this.saveToStorage();
   };
+
+  resetCart(){
+    this.cartItems = [];
+    this.saveToStorage();
+  };
   
   calculateCartQuantity() {
     let cartQuantity = 0;
@@ -80,6 +85,12 @@ class Cart{
   
     this.saveToStorage();
   };
+  
+  updateCartQuantity(){
+    const cartQuantity = cart.calculateCartQuantity();
+    document.querySelector('.js-cart-quantity')
+      .innerHTML = cartQuantity;
+  }
 
   updateDeliveryOption(productId, deliveryOptionId){
     let matchingProduct;

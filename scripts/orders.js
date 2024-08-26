@@ -1,5 +1,5 @@
 import { orders } from "../data/orders.js";
-import dayJs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { formatCurrency } from "./utils/money.js";
 import { getProduct, loadProductsFetch } from "../data/products.js";
 import { cart } from "../data/cart-class.js";
@@ -9,6 +9,7 @@ loadProductsFetch().then(() => {
 });
 
 function loadPage(){
+  cart.updateCartQuantity();
   let ordersHTML = '';
   orders.forEach((order) => {
     function loadOrderDetailsGrid(){
@@ -17,7 +18,9 @@ function loadPage(){
         const { productId } = product;
         const matchingProduct = getProduct(productId);
         const { quantity } = product;
-        const arrivalDate = dayJs(product.estimatedDeliveryTime).format('MMMM D');
+        const today = dayjs();
+        const arrivalDate = dayjs(product.estimatedDeliveryTime).format('MMMM D');
+        const deliveryMessage = today > arrivalDate ? 'Delivered On' : 'Arriving On';
         orderDetailsGridHTML += `
           <div class="product-image-container">
             <img src=${matchingProduct.image}>
@@ -28,7 +31,7 @@ function loadPage(){
               ${matchingProduct.name}
             </div>
             <div class="product-delivery-date">
-              Arriving on: ${arrivalDate}
+              ${deliveryMessage}: ${arrivalDate}
             </div>
             <div class="product-quantity">
               Quantity: ${quantity}
@@ -52,7 +55,7 @@ function loadPage(){
       return orderDetailsGridHTML;
     }
   
-    const orderTimeString = dayJs(order.orderTime).format('MMMM D');
+    const orderTimeString = dayjs(order.orderTime).format('MMMM D');
     const orderTotalCost = formatCurrency(order.totalCostCents);
     
     ordersHTML += `
@@ -90,6 +93,7 @@ function loadPage(){
         const { productId } =button.dataset; 
         cart.addToCart(productId, 1);
         button.innerHTML = 'Added';
+        cart.updateCartQuantity();
       setTimeout(() => {
         button.innerHTML = `
           <img class="buy-again-icon" src="images/icons/buy-again.png">

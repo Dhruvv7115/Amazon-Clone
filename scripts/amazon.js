@@ -82,12 +82,7 @@ function renderProductsGrid(){
   document.querySelector('.js-products-grid')
     .innerHTML = productsHTML ;
 
-  function updateCartQuantity(){
-    const cartQuantity = cart.calculateCartQuantity();
-    document.querySelector('.js-cart-quantity')
-      .innerHTML = cartQuantity;
-  }
-  updateCartQuantity();
+  cart.updateCartQuantity();
 
   const addedMessageTimeouts = {};
 
@@ -103,7 +98,7 @@ function renderProductsGrid(){
 
         cart.addToCart(productId,quantity);
 
-        updateCartQuantity();
+        cart.updateCartQuantity();
         
         const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
 
@@ -125,7 +120,9 @@ function renderProductsGrid(){
 }
 function searchButtonFunction(){
   const value = document.querySelector('.js-search-bar').value;
-  location.href = `amazon.html?search=${value}`;
+  if(value){
+    location.href = `amazon.html?search=${value}`;
+  }  
 }
 // middle section HTML
 document.querySelector('.js-search-button').addEventListener('click', () => {
@@ -134,5 +131,11 @@ document.querySelector('.js-search-button').addEventListener('click', () => {
 document.addEventListener('keydown', (event) => {
   if(event.key === "Enter"){
     searchButtonFunction();
+  }else if (event.key === "/"){
+    event.preventDefault();
+    document.querySelector('.js-search-bar').focus();
   }
+  console.log(event.key);
 });
+
+

@@ -4,6 +4,7 @@ import { getOrder } from "../data/orders.js";
 
 async function loadPage(){
   await loadProductsFetch();
+  
 
   const url = new URL(window.location.href);
 
@@ -28,13 +29,15 @@ async function loadPage(){
   const deliveryTime = dayjs(productDetails.estimatedDeliveryTime);
   const percentProgress = ((today - orderTime) / (deliveryTime - orderTime)) * 100;
 
+  const deliveryMessage = today > deliveryTime ? 'Delivered On' : 'Arriving On';
+
   const trackingPageHTML = `
     <a class="back-to-orders-link link-primary" href="orders.html">
       View all orders
     </a>
 
     <div class="delivery-date">
-      Arriving on ${dateString}
+      ${deliveryMessage} ${dateString}
     </div>
 
     <div class="product-info">
