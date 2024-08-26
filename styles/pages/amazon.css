@@ -158,3 +158,9 @@
   padding: 8px;
   border-radius: 50px;
 }
+.products-grid .empty-results-message{
+  grid-template-columns: repeat(2, 1fr);
+  padding-left: 10px;
+  padding-top: 10px;
+  text-wrap: nowrap;
+}
