@@ -76,7 +76,7 @@ export function renderOrderSummary(){
       <div>
         Your cart is empty.
       </div>
-      <a class="button-primary view-products-link" href="amazon.html">
+      <a class="button-primary view-products-link" href="index.html">
         View products
       </a>
     `;
