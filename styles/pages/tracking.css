@@ -53,7 +53,7 @@
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 319px) {
   .progress-labels-container {
     flex-direction: column;
     margin-bottom: 5px;

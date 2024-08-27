@@ -57,7 +57,7 @@ async function loadPage(){
       <div class="progress-label ${((percentProgress >= 50) && (percentProgress < 100)) ? 'current-status' : ''}">
         Shipped
       </div>
-      <div class="progress-label ${(percentProgress <= 100) ? 'current-status' : ''}">
+      <div class="progress-label ${(percentProgress >= 100) ? 'current-status' : ''}">
         Delivered
       </div>
     </div>
