@@ -129,7 +129,7 @@ function renderProductsGrid(){
 function searchButtonFunction(){
   const value = document.querySelector('.js-search-bar').value;
   if(value){
-    location.href = `amazon.html?search=${value}`;
+    location.href = `index.html?search=${value}`;
   }  
 }
 // middle section HTML
