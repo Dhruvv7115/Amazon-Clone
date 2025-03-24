@@ -89,7 +89,7 @@ class Cart{
   updateCartQuantity(){
     const cartQuantity = cart.calculateCartQuantity();
     document.querySelector('.js-cart-quantity')
-      .innerHTML = cartQuantity;
+      .innerText = cartQuantity;
   }
 
   updateDeliveryOption(productId, deliveryOptionId){

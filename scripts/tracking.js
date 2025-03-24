@@ -1,6 +1,7 @@
 import { getProduct, loadProductsFetch } from "../data/products.js";
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+// import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { getOrder } from "../data/orders.js";
+import { cart } from "../data/cart-class.js";
 
 async function loadPage(){
   await loadProductsFetch();
@@ -21,24 +22,25 @@ async function loadPage(){
     }
   });
 
-  const dateString = dayjs(productDetails.estimatedDeliveryTime).format('dddd, MMMM D');
+  const dateString = productDetails.estimatedDeliveryTime;
 
 
-  const today = dayjs();
-  const orderTime = dayjs(order.orderTime);
-  const deliveryTime = dayjs(productDetails.estimatedDeliveryTime);
-  const percentProgress = ((today - orderTime) / (deliveryTime - orderTime)) * 100;
+  const today =  new Date();
+  const orderTime = order.orderTime;
+  // const deliveryTime = dayjs(productDetails.estimatedDeliveryTime);
+  const percentProgress = ((today - dateString) / (dateString - orderTime)) * 100;
 
-  const deliveryMessage = today > deliveryTime ? 'Delivered On' : 'Arriving On';
+  const deliveryMessage = (today.toUTCString() > dateString) ? 'Delivered On' : 'Arriving On';
 
   const trackingPageHTML = `
     <a class="back-to-orders-link link-primary" href="orders.html">
       View all orders
     </a>
-
+    <!--
     <div class="delivery-date">
       ${deliveryMessage} ${dateString}
     </div>
+    -->
 
     <div class="product-info">
       ${product.name}
@@ -68,5 +70,7 @@ async function loadPage(){
   `;
 
   document.querySelector('.js-order-tracking').innerHTML = trackingPageHTML;
+
+  cart.updateCartQuantity();
 }
 loadPage();

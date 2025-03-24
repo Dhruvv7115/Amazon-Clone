@@ -2,9 +2,82 @@ import { cart } from '../../data/cart-class.js';
 import { getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import { calculateDeliveryDate, deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js'
-import dayJs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 import { renderCheckoutHeader } from './checkoutHeader.js';
+
+export function getDeliveryDate(day){
+  let deliveryDate = ''
+  switch(day.getDay()){
+    case 0:
+      deliveryDate += 'Sunday, '
+      break;
+    case 1:
+      deliveryDate += 'Monday, '
+      break;
+    case 2:
+      deliveryDate += 'Tuesday, '
+      break;
+    case 3:
+      deliveryDate += 'Wednesday, '
+      break;
+    case 4:
+      deliveryDate += 'Thursday, '
+      break;
+    case 5:
+      deliveryDate += 'Friday, '
+      break;
+    case 6:
+      deliveryDate += 'Saturday, '
+      break;
+    default:
+      console.log('no day')
+      return; 
+  }
+  switch(day.getMonth()){
+    case 0:
+      deliveryDate += 'January '
+      break;
+    case 1:
+      deliveryDate += 'February '
+      break;
+    case 2:
+      deliveryDate += 'March '
+      break;
+    case 3:
+      deliveryDate += 'April '
+      break;
+    case 4:
+      deliveryDate += 'May '
+      break;
+    case 5:
+      deliveryDate += 'June '
+      break;
+    case 6:
+      deliveryDate += 'July '
+      break;
+    case 7:
+      deliveryDate += 'August '
+      break;
+    case 8:
+      deliveryDate += 'September '
+      break;
+    case 9:
+      deliveryDate += 'October '
+      break;
+    case 10:
+      deliveryDate += 'November '
+      break;
+    case 11:
+      deliveryDate += 'December '
+      break;
+    default:
+      console.log('no month')
+      return; 
+  }
+
+  deliveryDate += day.getDate()
+  return deliveryDate;
+}
 
 export function renderOrderSummary(){
   let cartSummaryHTML = '';
@@ -21,12 +94,15 @@ export function renderOrderSummary(){
       cartSummaryHTML += `
         <div class="cart-item-container
           js-cart-item-container
-          js-cart-item-container-${matchingProduct.id}">
+          js-cart-item-container-${matchingProduct.id}">    
+
           <div class="delivery-date">
-            Delivery date: ${dateString}
+            Delivery Date:
+            <span class="js-delivery-date">${dateString}</span>
           </div>
 
           <div class="cart-item-details-grid">
+
             <img class="product-image"
               src="${matchingProduct.image}">
 
@@ -89,11 +165,14 @@ export function renderOrderSummary(){
     let html = '';
 
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayJs();
-      const deliveryDate = today.add(
-        deliveryOption.deliveryDays,
-        'days');
-      const dateString = deliveryDate.format('dddd, MMMM D');
+      // const today = dayJs();
+      // const deliveryDate = today.add(
+      //   deliveryOption.deliveryDays,
+      //   'days');
+      // const dateString = deliveryDate.format('dddd, MMMM D');
+      const deliveryDate = new Date();
+      deliveryDate.setDate(deliveryDate.getDate() + deliveryOption.deliveryDays);
+      const dateString = calculateDeliveryDate(deliveryOption);
 
       const priceCentsString = (deliveryOption.priceCents === 0)
         ? 'FREE'
@@ -112,10 +191,9 @@ export function renderOrderSummary(){
             class="delivery-option-input
             js-delivery-option-input-${matchingProduct.id}-${deliveryOption.id}"
             name="delivery-option-${matchingProduct.id}">
+
           <div>
-            <div class="delivery-option-date">
-              ${dateString}
-            </div>
+            <div class="delivery-option-date">${dateString}</div>
             <div class="delivery-option-price">
               ${priceCentsString} Shipping
             </div>
@@ -213,3 +291,4 @@ export function renderOrderSummary(){
       });
     });
 }
+

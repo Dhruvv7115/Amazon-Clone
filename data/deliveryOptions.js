@@ -1,4 +1,5 @@
-import dayJs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+import { getDeliveryDate } from '../scripts/checkout/orderSummary.js';
+
 export function getDeliveryOption(deliveryOptionId){
   let deliveryOption;
 
@@ -10,38 +11,54 @@ export function getDeliveryOption(deliveryOptionId){
   return deliveryOption;
 }
 export function calculateDeliveryDate(deliveryOption){
-  let deliveryDate = dayJs();
 
+  let deliveryDate = new Date();
   let remainingDays = deliveryOption.deliveryDays;
-  
+
   while (remainingDays > 0) {
-    deliveryDate = deliveryDate.add(1, 'day');
+    deliveryDate.setDate(deliveryDate.getDate() + 1);
 
     if (!isWeekend(deliveryDate)) {
       remainingDays--;
     }
   }
 
-  const dateString = deliveryDate.format(
-    'dddd, MMMM D');
+  const dateString = getDeliveryDate(deliveryDate);
+
   return dateString;
+  // let deliveryDate = dayJs();
+
+  // let remainingDays = deliveryOption.deliveryDays;
+  
+  // while (remainingDays > 0) {
+  //   deliveryDate = deliveryDate.add(1, 'day');
+
+  //   if (!isWeekend(deliveryDate)) {
+  //     remainingDays--;
+  //   }
+  // }
+
+  // const dateString = deliveryDate.format(
+  //   'dddd, MMMM D');
 }
 
 function isWeekend(date) {
-  const dayOfWeek = date.format('dddd');
-  return dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday';
+  return getDeliveryDate(date).includes('Sunday') || getDeliveryDate(date).includes('Saturday');
 }
 
 export const deliveryOptions = [{
-  id: '1',
-  deliveryDays: 7,
-  priceCents: 0
-},{
-  id: '2',
-  deliveryDays: 3,
-  priceCents: 499
-},{
-  id: '3',
-  deliveryDays: 1,
-  priceCents: 999
-}]
+    id: '1',
+    deliveryDays: 10,
+    priceCents: 0
+  },
+  {
+    id: '2',
+    deliveryDays: 3,
+    priceCents: 499
+  },
+  {
+    id: '3',
+    deliveryDays: 1,
+    priceCents: 999
+  }
+];
