@@ -245,13 +245,18 @@ export function renderOrderSummary(){
         alert('Quantity must be at least 1 and less than 1000');
         return;
       }
+
       cart.updateQuantity(productId, newQuantity);
-      renderPaymentSummary();
-      renderCheckoutHeader();
 
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
+
       container.classList.remove('is-editing-quantity');
 
+      renderPaymentSummary();
+
+      renderCheckoutHeader();
+
+      renderOrderSummary();
     });
   });
   document.querySelectorAll('.js-quantity-input')
