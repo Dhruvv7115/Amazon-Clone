@@ -1,33 +1,26 @@
 import { orders } from "../data/orders.js";
-import { getDeliveryDate } from "./checkout/orderSummary.js";
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { formatCurrency } from "./utils/money.js";
 import { getProduct, loadProductsFetch } from "../data/products.js";
 import { cart } from "../data/cart-class.js";
 
 loadProductsFetch().then(() => {
   loadPage();
-  cart.updateCartQuantity();
 });
 
 function loadPage(){
   cart.updateCartQuantity();
   let ordersHTML = '';
   orders.forEach((order) => {
-    console.log(orders);
     function loadOrderDetailsGrid(){
       let orderDetailsGridHTML = '';
       order.products.forEach((product) => {
         const { productId } = product;
         const matchingProduct = getProduct(productId);
         const { quantity } = product;
-        // const today = dayjs();
-        // const arrivalDate = dayjs(product.estimatedDeliveryTime).format('MMMM D');
-        // const deliveryMessage = today > arrivalDate ? 'Delivered On' : 'Arriving On';
-        const today = new Date();
-        const arrivalDate = product.estimatedDeliveryTime;
-        const deliveryMessage = today > arrivalDate ? 'Delivered On' : 'Arriving On';;
-
-
+        const today = dayjs();
+        const arrivalDate = dayjs(product.estimatedDeliveryTime).format('MMMM D');
+        const deliveryMessage = today > arrivalDate ? 'Delivered On' : 'Arriving On';
         orderDetailsGridHTML += `
           <div class="product-image-container">
             <img src=${matchingProduct.image}>
@@ -37,11 +30,9 @@ function loadPage(){
             <div class="product-name">
               ${matchingProduct.name}
             </div>
-            <!--
             <div class="product-delivery-date">
               ${deliveryMessage}: ${arrivalDate}
             </div>
-            -->
             <div class="product-quantity">
               Quantity: ${quantity}
             </div>
@@ -64,18 +55,7 @@ function loadPage(){
       return orderDetailsGridHTML;
     }
   
-    // const { orderTime } = order;
-
-    let date = order.orderTime;
-    let year = date.slice(0,4);
-    let month = date.slice(5,7);
-    let dt = date.slice(8,10);
-    let orderDate = year+'-' + month + '-'+ dt; 
-    let orderTime = date.slice(11, 19);
-    let hours = (orderTime.slice(0,2));
-    (hours > 11) ? (orderTime += ' PM') : (orderTime += ' AM'); 
-
-    // console.log(year+'-' + month + '-'+dt);
+    const orderTimeString = dayjs(order.orderTime).format('MMMM D');
     const orderTotalCost = formatCurrency(order.totalCostCents);
     
     ordersHTML += `
@@ -84,8 +64,7 @@ function loadPage(){
           <div class="order-header-left-section">
             <div class="order-date">
               <div class="order-header-label">Order Placed:</div>
-              <div>${orderDate}</div>
-              <div>${orderTime}</div>
+              <div>${orderTimeString}</div>
             </div>
             <div class="order-total">
               <div class="order-header-label">Total:</div>
